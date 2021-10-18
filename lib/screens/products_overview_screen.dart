@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop/providers/cart.dart';
 import 'package:shop/providers/products.dart';
 import 'package:shop/screens/cart_screen.dart';
+import 'package:shop/widgets/app_drawer.dart';
 import 'package:shop/widgets/badge.dart';
 import 'package:shop/widgets/products_grid.dart';
 
@@ -22,6 +23,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   Widget build(BuildContext context) {
     final productsContainer = Provider.of<Products>(context, listen: false);
     return Scaffold(
+      drawer: AppDrawer(),
       appBar: AppBar(
         actions: [
           PopupMenuButton(

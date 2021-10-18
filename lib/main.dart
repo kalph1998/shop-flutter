@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop/providers/cart.dart';
 import 'package:shop/providers/orders.dart';
 import 'package:shop/screens/cart_screen.dart';
+import 'package:shop/screens/orders_screen.dart';
 
 import 'package:shop/screens/product_detail_screen.dart';
 import 'package:shop/screens/products_overview_screen.dart';
@@ -37,10 +38,11 @@ class MyApp extends StatelessWidget {
           colorScheme: theme.colorScheme
               .copyWith(primary: Colors.purple, secondary: Colors.deepOrange),
         ),
-        home: ProductsOverviewScreen(),
+        home: const ProductsOverviewScreen(),
         routes: {
-          ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
-          CartScreen.routeName: (ctx) => CartScreen()
+          ProductDetailScreen.routeName: (ctx) => const ProductDetailScreen(),
+          CartScreen.routeName: (ctx) => const CartScreen(),
+          OrdersScreen.routeName: (ctx) => const OrdersScreen()
         },
       ),
     );
