@@ -9,19 +9,44 @@ class CartItem extends StatelessWidget {
   final String title;
   final String productId;
 
-  const CartItem(
-      {Key? key,
-      required this.id,
-      required this.price,
-      required this.quantity,
-      required this.title,
-      required this.productId})
-      : super(key: key);
+  const CartItem({
+    Key? key,
+    required this.id,
+    required this.price,
+    required this.quantity,
+    required this.title,
+    required this.productId,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context, listen: false);
     return Dismissible(
+      confirmDismiss: (direction) {
+        return showDialog(
+            context: context,
+            builder: (ctx) {
+              return AlertDialog(
+                title: const Text('Are you sure'),
+                content: const Text(
+                    "Are you sure you want to remove item from the cart"),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(ctx).pop(false);
+                    },
+                    child: const Text('No'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(ctx).pop(true);
+                    },
+                    child: const Text('Yes'),
+                  ),
+                ],
+              );
+            });
+      },
       key: ValueKey(id),
       background: Container(
         color: Theme.of(context).errorColor,
