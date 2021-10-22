@@ -29,7 +29,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   void _saveForm() {
     _form.currentState?.save();
-    print(_editedProduct.title);
+    final isValid = _form.currentState?.validate();
+    print(isValid);
   }
 
   @override
@@ -67,6 +68,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     imageUrl: _editedProduct.imageUrl,
                   );
                 },
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter a value';
+                  }
+                  return null;
+                },
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Price'),
@@ -85,6 +92,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     imageUrl: _editedProduct.imageUrl,
                   );
                 },
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Please enter a value";
+                  }
+                  if (double.tryParse(value) == null) {
+                    return "Please enter valid value";
+                  }
+                  if (double.parse(value) <= 0) {
+                    return "please enter value greater than 0";
+                  }
+                },
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Description'),
@@ -99,6 +117,15 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     price: _editedProduct.price,
                     imageUrl: _editedProduct.imageUrl,
                   );
+                },
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter a value';
+                  }
+                  if (value.length < 10) {
+                    return 'Please enter at least 10 character';
+                  }
+                  return null;
                 },
               ),
               Row(
@@ -140,6 +167,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           price: _editedProduct.price,
                           imageUrl: value ?? '',
                         );
+                      },
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter image url';
+                        }
+                        if (value.startsWith('https') &&
+                            value.startsWith('http')) {
+                          return 'Please enter valid url';
+                        }
+                        return null;
                       },
                     ),
                   )
