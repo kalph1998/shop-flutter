@@ -1,7 +1,9 @@
 import 'dart:math';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'product.dart';
+import 'package:http/http.dart' as http;
 
 class Products with ChangeNotifier {
   final List<Product> _items = [
@@ -47,17 +49,31 @@ class Products with ChangeNotifier {
     return _items.where((element) => element.isFavorite).toList();
   }
 
-  void addProduct(Product product) {
-    final newProduct = Product(
+  Future<void> addProduct(Product product) {
+    final url = Uri.parse(
+        'https://shop-flutter-35558-default-rtdb.asia-southeast1.firebasedatabase.app/products.json');
+    return http
+        .post(url,
+            body: json.encode({
+              'title': product.title,
+              'description': product.description,
+              'imageUrl': product.imageUrl,
+              'price': product.price,
+              'isFavorite': product.isFavorite
+            }))
+        .then((value) {
+      final newProduct = Product(
         title: product.title,
         description: product.description,
         imageUrl: product.imageUrl,
         price: product.price,
-        id: DateTime.now().toString());
+        id: json.decode(value.body)['name'],
+      );
 
-    _items.add(newProduct);
+      _items.add(newProduct);
 
-    notifyListeners();
+      notifyListeners();
+    });
   }
 
   Product findById(String id) {
