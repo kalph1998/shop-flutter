@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import './cart.dart';
+import 'package:http/http.dart' as http;
 
 class OrderItem {
   final String id;
@@ -22,7 +25,18 @@ class Orders with ChangeNotifier {
     return [..._orders];
   }
 
-  void addOrder(List<CartItem> cartProducts, double total) {
+  Future<void> addOrder(List<CartItem> cartProducts, double total) async {
+    final url = Uri.parse(
+        'https://shop-flutter-35558-default-rtdb.asia-southeast1.firebasedatabase.app/products.json');
+    final timeStamp = DateTime.now();
+
+    http.post(
+      url,
+      body: json.encode(
+        {'amount': total, 'dateTime': timeStamp.toIso8601String()},
+      ),
+    );
+
     _orders.insert(
       0,
       OrderItem(
