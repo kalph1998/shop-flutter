@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
+import 'package:shop/models/http_exceptin.dart';
 
 class Product with ChangeNotifier {
   final dynamic id;
@@ -17,8 +21,29 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
-  void toggleFavorite() {
+  Future<void> toggleFavorite() async {
+    var oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
+    final url = Uri.parse(
+        'https://shop-flutter-35558-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id');
+    try {
+      final response = await http.patch(
+        url,
+        body: json.encode(
+          {
+            'isFavorite': isFavorite,
+          },
+        ),
+      );
+      if (response.statusCode >= 400) {
+        isFavorite = oldStatus;
+        notifyListeners();
+        throw HttpException('Could not delete product');
+      }
+    } catch (error) {
+      isFavorite = oldStatus;
+      notifyListeners();
+    }
   }
 }
