@@ -40,7 +40,7 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
           ),
           if (_expanded)
             Container(
-              height: min(widget.order.products.length * 20.0 + 10, 100),
+              height: min(widget.order.products.length * 40.0 + 10, 100),
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               child: ListView(
                 children: widget.order.products
