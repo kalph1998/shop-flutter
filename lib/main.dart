@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/providers/cart.dart';
 import 'package:shop/providers/orders.dart';
+import 'package:shop/screens/auth_screen.dart';
 import 'package:shop/screens/cart_screen.dart';
 import 'package:shop/screens/edit_product_screen.dart';
 import 'package:shop/screens/orders_screen.dart';
 
 import 'package:shop/screens/product_detail_screen.dart';
-import 'package:shop/screens/products_overview_screen.dart';
+// import 'package:shop/screens/products_overview_screen.dart';
 import 'package:shop/screens/user_products_screen.dart';
 // import 'package:shop/widgets/user_product_item.dart';
 import './providers/products.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
           colorScheme: theme.colorScheme
               .copyWith(primary: Colors.purple, secondary: Colors.deepOrange),
         ),
-        home: const ProductsOverviewScreen(),
+        home: const AuthScreen(),
         routes: {
           ProductDetailScreen.routeName: (ctx) => const ProductDetailScreen(),
           CartScreen.routeName: (ctx) => const CartScreen(),
