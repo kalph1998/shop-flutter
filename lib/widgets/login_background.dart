@@ -8,9 +8,9 @@ class LoginBackground extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-            image: AssetImage('assets/images/nature.png'),
+            image: AssetImage('assets/images/nature.jpg'),
             fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(Colors.black45, BlendMode.darken)),
+            colorFilter: ColorFilter.mode(Colors.black54, BlendMode.darken)),
       ),
     );
   }
