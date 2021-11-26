@@ -21,9 +21,12 @@ class Products with ChangeNotifier {
     return _items.where((element) => element.isFavorite).toList();
   }
 
-  Future<void> fetchAndSetProducts() async {
+  Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
+    final filterString =
+        filterByUser ? 'orderBy="createrId"&equalTo="$userId"' : '';
+
     final url = Uri.parse(
-        'https://shop-flutter-35558-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken');
+        'https://shop-flutter-35558-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken&$filterByUser');
     final favoriteUrl = Uri.parse(
         'https://shop-flutter-35558-default-rtdb.asia-southeast1.firebasedatabase.app/userFavorites/$userId.json?auth=$authToken');
 
