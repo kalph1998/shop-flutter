@@ -9,10 +9,9 @@ import 'package:http/http.dart' as http;
 class Products with ChangeNotifier {
   List<Product> _items = [];
   final String authToken;
+  final String userId;
 
-  Products({
-    this.authToken = '',
-  });
+  Products({this.authToken = '', this.userId = ''});
 
   List<Product> get items {
     return [..._items];
@@ -25,21 +24,27 @@ class Products with ChangeNotifier {
   Future<void> fetchAndSetProducts() async {
     final url = Uri.parse(
         'https://shop-flutter-35558-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken');
+    final favoriteUrl = Uri.parse(
+        'https://shop-flutter-35558-default-rtdb.asia-southeast1.firebasedatabase.app/userFavorites/$userId.json?auth=$authToken');
 
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final favoriteResponse = await http.get(favoriteUrl);
+      final favoriteData = json.decode(favoriteResponse.body);
       final List<Product> loadedProducts = [];
 
       extractedData.forEach((prodId, prodData) {
-        loadedProducts.add(Product(
-          id: prodId,
-          title: prodData['title'],
-          description: prodData['description'],
-          price: prodData['price'],
-          imageUrl: prodData['imageUrl'],
-          isFavorite: prodData['isFavorite'],
-        ));
+        loadedProducts.add(
+          Product(
+              id: prodId,
+              title: prodData['title'],
+              description: prodData['description'],
+              price: prodData['price'],
+              imageUrl: prodData['imageUrl'],
+              isFavorite:
+                  favoriteData == null ? false : favoriteData[prodId] ?? false),
+        );
       });
 
       _items = loadedProducts;
@@ -60,7 +65,7 @@ class Products with ChangeNotifier {
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
-            'isFavorite': product.isFavorite
+            'createrId': userId
           }));
       final newProduct = Product(
         title: product.title,
@@ -94,6 +99,7 @@ class Products with ChangeNotifier {
             'description': newProduct.description,
             'imageUrl': newProduct.imageUrl,
             'price': newProduct.price,
+            'createrId': userId,
           }));
 
       _items[prodIndex] = newProduct;
