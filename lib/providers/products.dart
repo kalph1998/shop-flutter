@@ -53,6 +53,7 @@ class Products with ChangeNotifier {
       _items = loadedProducts;
       notifyListeners();
     } catch (error) {
+      print(error);
       throw error;
     }
   }
@@ -82,7 +83,6 @@ class Products with ChangeNotifier {
 
       notifyListeners();
     } catch (error) {
-      print(error);
       throw error;
     }
   }
